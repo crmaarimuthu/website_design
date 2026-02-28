@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Photography Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Admin Navigation -->
+    <nav class="admin-navbar">
+        <div class="container">
+            <div class="admin-nav-content">
+                <h1>📸 Studio Admin Panel</h1>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Login (initially shown) -->
+    <div id="loginSection" class="admin-login">
+        <div class="login-container">
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <input type="password" id="adminPassword" required placeholder="Enter admin password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">Login</button>
+            </form>
+            <p id="loginError" style="color: red; display: none;"></p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (hidden until login) -->
+    <div id="adminSection" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a>
+                    <a href="#" class="menu-item" data-section="bookings">📅 Bookings</a>
+                    <a href="#" class="menu-item" data-section="media">🖼️ Media</a>
+                    <a href="#" class="menu-item" data-section="settings">⚙️ Settings</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="admin-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="admin-section active">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-box">
+                            <h3 id="totalBookingsCount">0</h3>
+                            <p>Total Bookings</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="todayBookingsCount">0</h3>
+                            <p>Today's Bookings</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="pendingBookingsCount">0</h3>
+                            <p>Pending Bookings</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="confirmedBookingsCount">0</h3>
+                            <p>Confirmed Bookings</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="totalMediaCount">0</h3>
+                            <p>Gallery Items</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="studioStatusDisplay">Open</h3>
+                            <p>Studio Status</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-section-content">
+                        <h3>Quick Info</h3>
+                        <div class="info-boxes">
+                            <div class="info-box">
+                                <h4>Studio Name</h4>
+                                <p id="dashboardStudioName">--</p>
+                            </div>
+                            <div class="info-box">
+                                <h4>Operating Hours</h4>
+                                <p id="dashboardHours">--</p>
+                            </div>
+                            <div class="info-box">
+                                <h4>Max Bookings/Day</h4>
+                                <p id="dashboardMaxBookings">--</p>
+                            </div>
+                            <div class="info-box">
+                                <h4>Contact</h4>
+                                <p id="dashboardContact">--</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-section-content">
+                        <h3>Recent Bookings</h3>
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentBookingsBody">
+                                <!-- Recent bookings will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Bookings Section -->
+                <section id="bookings-section" class="admin-section">
+                    <h2>Manage Bookings</h2>
+                    
+                    <div class="filter-controls">
+                        <input type="date" id="filterDate" class="form-control">
+                        <select id="filterStatus" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="filterBookings()">Filter</button>
+                    </div>
+
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Event Type</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <tr><td colspan="8" style="text-align: center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Media Section -->
+                <section id="media-section" class="admin-section">
+                    <h2>Manage Gallery</h2>
+                    
+                    <div class="media-upload-section">
+                        <h3>Upload New Media</h3>
+                        <form id="mediaUploadForm" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="mediaTitle">Title *</label>
+                                    <input type="text" id="mediaTitle" required placeholder="Media title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mediaPriority">Priority (lower = first) *</label>
+                                    <input type="number" id="mediaPriority" required value="999" min="1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mediaDescription">Description</label>
+                                <textarea id="mediaDescription" placeholder="Media description" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mediaFile">Select File (Image/Video) *</label>
+                                <input type="file" id="mediaFile" required accept="image/*,video/*">
+                                <small>Max size: 50MB. Supported: JPG, PNG, GIF, MP4</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Upload Media</button>
+                        </form>
+                        <p id="uploadStatus"></p>
+                    </div>
+
+                    <div class="media-list-section">
+                        <h3>Gallery Items</h3>
+                        <div class="media-grid" id="mediaListAdmin">
+                            <p style="text-align: center;">Loading media...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings-section" class="admin-section">
+                    <h2>Studio Settings</h2>
+                    <form id="studioSettingsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settingsStudioName">Studio Name</label>
+                                <input type="text" id="settingsStudioName" placeholder="Studio name">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsContact">Contact Number</label>
+                                <input type="tel" id="settingsContact" placeholder="Contact number">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settingsEmail">Email Address</label>
+                                <input type="email" id="settingsEmail" placeholder="Email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsAddress">Address</label>
+                                <input type="text" id="settingsAddress" placeholder="Full address">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsAbout">About Studio</label>
+                            <textarea id="settingsAbout" placeholder="About description" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settingsOpenTime">Opening Time</label>
+                                <input type="time" id="settingsOpenTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsCloseTime">Closing Time</label>
+                                <input type="time" id="settingsCloseTime">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settingsMaxBookings">Max Bookings Per Day</label>
+                                <input type="number" id="settingsMaxBookings" min="1" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsWhatsapp">WhatsApp Number</label>
+                                <input type="tel" id="settingsWhatsapp" placeholder="91XXXXXXXXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsLiveStream">Live Stream URL</label>
+                            <input type="text" id="settingsLiveStream" placeholder="YouTube Live or IP Camera URL">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminNewPassword">Update Admin Password</label>
+                            <input type="password" id="adminNewPassword" placeholder="Leave blank to keep current password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    </form>
+                    <p id="settingsStatus"></p>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-top: 50px;">
+        <div class="container">
+            <p>&copy; 2026 Photography Studio Admin Panel</p>
+        </div>
+    </footer>
+
+    <script>
+        let isLoggedIn = false;
+        let adminPassword = '';
+        let allBookings = [];
+
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            adminPassword = document.getElementById('adminPassword').value;
+
+            // Fallback hardcoded password (for demo when DB not available)
+            const DEMO_PASSWORD = "mynanpa";
+            
+            try {
+                const response = await fetch('/api/studio');
+                const data = await response.json();
+                const studio = data.studio;
+
+                if (studio.adminPassword === adminPassword) {
+                    isLoggedIn = true;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminSection').style.display = 'block';
+                    loadDashboard();
+                    loadBookings();
+                    loadMediaAdmin();
+                    loadSettings();
+                } else {
+                    document.getElementById('loginError').textContent = 'Incorrect password';
+                    document.getElementById('loginError').style.display = 'block';
+                }
+            } catch (error) {
+                // If database unavailable, use demo password
+                if (adminPassword === DEMO_PASSWORD) {
+                    isLoggedIn = true;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminSection').style.display = 'block';
+                    loadDashboard();
+                    loadBookings();
+                    loadMediaAdmin();
+                    loadSettings();
+                } else {
+                    document.getElementById('loginError').textContent = 'Incorrect password (Demo mode: use "mynanpa")';
+                    document.getElementById('loginError').style.display = 'block';
+                }
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            isLoggedIn = false;
+            adminPassword = '';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminSection').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        });
+
+        // Menu navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                
+                // Hide all sections
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                
+                // Show selected section
+                document.getElementById(section + '-section').classList.add('active');
+                
+                // Update active menu item
+                document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const response = await fetch('/api/dashboard');
+                const data = await response.json();
+                const dashboard = data.dashboard;
+
+                document.getElementById('totalBookingsCount').textContent = dashboard.totalBookings;
+                document.getElementById('todayBookingsCount').textContent = dashboard.todayBookings;
+                document.getElementById('pendingBookingsCount').textContent = dashboard.pendingBookings;
+                document.getElementById('confirmedBookingsCount').textContent = dashboard.confirmedBookings;
+                document.getElementById('totalMediaCount').textContent = dashboard.totalMedia;
+
+                document.getElementById('dashboardStudioName').textContent = dashboard.studioInfo.name;
+                document.getElementById('dashboardMaxBookings').textContent = dashboard.studioInfo.maxBookingsPerDay;
+                document.getElementById('dashboardContact').textContent = dashboard.studioInfo.contact;
+
+                // Load recent bookings
+                const tbody = document.getElementById('recentBookingsBody');
+                tbody.innerHTML = dashboard.recentBookings.map(booking => `
+                    <tr>
+                        <td>${booking.name}</td>
+                        <td>${booking.eventDate}</td>
+                        <td>${booking.eventType}</td>
+                        <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                        <td><button class="btn btn-small" onclick="editBooking('${booking._id}')">Edit</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                // Show demo data when database unavailable
+                document.getElementById('totalBookingsCount').textContent = '0';
+                document.getElementById('todayBookingsCount').textContent = '0';
+                document.getElementById('pendingBookingsCount').textContent = '0';
+                document.getElementById('confirmedBookingsCount').textContent = '0';
+                document.getElementById('totalMediaCount').textContent = '0';
+                document.getElementById('recentBookingsBody').innerHTML = '<tr><td colspan="5" style="text-align: center;">No data - database unavailable. Setup MongoDB Atlas to enable bookings.</td></tr>';
+            }
+        }
+
+        // Load all bookings
+        async function loadBookings() {
+            try {
+                const response = await fetch('/api/bookings');
+                const data = await response.json();
+                allBookings = data.bookings;
+                displayBookings(allBookings);
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+        }
+
+        // Display bookings
+        function displayBookings(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No bookings found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = bookings.map(booking => `
+                <tr>
+                    <td>${booking.name}</td>
+                    <td>${booking.phone}</td>
+                    <td>${booking.email}</td>
+                    <td>${booking.eventType}</td>
+                    <td>${booking.eventDate}</td>
+                    <td>${booking.eventTime}</td>
+                    <td>
+                        <select class="status-select" onchange="updateBookingStatus('${booking._id}', this.value)">
+                            <option value="pending" ${booking.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="confirmed" ${booking.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option value="cancelled" ${booking.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-small" onclick="viewBooking('${booking._id}')">View</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteBooking('${booking._id}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter bookings
+        function filterBookings() {
+            const date = document.getElementById('filterDate').value;
+            const status = document.getElementById('filterStatus').value;
+
+            let filtered = allBookings;
+            if (date) filtered = filtered.filter(b => b.eventDate === date);
+            if (status) filtered = filtered.filter(b => b.status === status);
+
+            displayBookings(filtered);
+        }
+
+        // Update booking status
+        async function updateBookingStatus(id, status) {
+            try {
+                await fetch(`/api/booking/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                loadBookings();
+            } catch (error) {
+                console.error('Error updating booking:', error);
+                alert('Error updating booking');
+            }
+        }
+
+        // Delete booking
+        async function deleteBooking(id) {
+            if (!confirm('Are you sure you want to delete this booking?')) return;
+
+            try {
+                await fetch(`/api/booking/${id}`, { method: 'DELETE' });
+                loadBookings();
+                loadDashboard();
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                alert('Error deleting booking');
+            }
+        }
+
+        // Load media for admin
+        async function loadMediaAdmin() {
+            try {
+                const response = await fetch('/api/media');
+                const data = await response.json();
+                displayMediaAdmin(data.media);
+            } catch (error) {
+                console.error('Error loading media:', error);
+            }
+        }
+
+        // Display media for admin
+        function displayMediaAdmin(media) {
+            const container = document.getElementById('mediaListAdmin');
+            if (media.length === 0) {
+                container.innerHTML = '<p style="text-align: center;">No media found</p>';
+                return;
+            }
+
+            container.innerHTML = media.map(item => `
+                <div class="media-admin-card">
+                    ${item.type === 'image' 
+                        ? `<img src="${item.cloudinaryUrl || '/uploads/' + item.filename}" alt="${item.title}">`
+                        : `<video src="${item.cloudinaryUrl || '/uploads/' + item.filename}"></video>`
+                    }
+                    <div class="media-admin-info">
+                        <h4>${item.title}</h4>
+                        <p>Priority: ${item.priority}</p>
+                        <div class="media-admin-actions">
+                            <button class="btn btn-small" onclick="editMedia('${item._id}')">Edit</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteMedia('${item._id}')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle media upload
+        document.getElementById('mediaUploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('mediaTitle').value);
+            formData.append('description', document.getElementById('mediaDescription').value);
+            formData.append('priority', document.getElementById('mediaPriority').value);
+            formData.append('file', document.getElementById('mediaFile').files[0]);
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('uploadStatus').innerHTML = '<p style="color: green;">✓ Media uploaded successfully!</p>';
+                    this.reset();
+                    loadMediaAdmin();
+                    setTimeout(() => {
+                        document.getElementById('uploadStatus').innerHTML = '';
+                    }, 3000);
+                } else {
+                    document.getElementById('uploadStatus').innerHTML = `<p style="color: red;">✗ ${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Error uploading media:', error);
+                document.getElementById('uploadStatus').innerHTML = '<p style="color: red;">✗ Error uploading media</p>';
+            }
+        });
+
+        // Delete media
+        async function deleteMedia(id) {
+            if (!confirm('Are you sure you want to delete this media?')) return;
+
+            try {
+                await fetch(`/api/media/${id}`, { method: 'DELETE' });
+                loadMediaAdmin();
+            } catch (error) {
+                console.error('Error deleting media:', error);
+                alert('Error deleting media');
+            }
+        }
+
+        // Load studio settings
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/studio');
+                const data = await response.json();
+                const studio = data.studio;
+
+                document.getElementById('settingsStudioName').value = studio.studioName;
+                document.getElementById('settingsContact').value = studio.contact;
+                document.getElementById('settingsEmail').value = studio.email;
+                document.getElementById('settingsAddress').value = studio.address;
+                document.getElementById('settingsAbout').value = studio.about;
+                document.getElementById('settingsOpenTime').value = studio.openTime;
+                document.getElementById('settingsCloseTime').value = studio.closeTime;
+                document.getElementById('settingsMaxBookings').value = studio.maxBookingsPerDay;
+                document.getElementById('settingsWhatsapp').value = studio.whatsappNumber;
+                document.getElementById('settingsLiveStream').value = studio.liveStreamUrl;
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                // Set demo defaults
+                document.getElementById('settingsStudioName').value = 'Maari Photography Studio';
+                document.getElementById('settingsContact').value = '919876543210';
+                document.getElementById('settingsEmail').value = 'studio@email.com';
+                document.getElementById('settingsAddress').value = 'Your Studio Address';
+                document.getElementById('settingsAbout').value = 'Welcome to our photography studio';
+                document.getElementById('settingsOpenTime').value = '09:00';
+                document.getElementById('settingsCloseTime').value = '20:00';
+                document.getElementById('settingsMaxBookings').value = '5';
+                document.getElementById('settingsWhatsapp').value = '919876543210';
+            }
+        }
+
+        // Save studio settings
+        document.getElementById('studioSettingsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const settings = {
+                studioName: document.getElementById('settingsStudioName').value,
+                contact: document.getElementById('settingsContact').value,
+                email: document.getElementById('settingsEmail').value,
+                address: document.getElementById('settingsAddress').value,
+                about: document.getElementById('settingsAbout').value,
+                openTime: document.getElementById('settingsOpenTime').value,
+                closeTime: document.getElementById('settingsCloseTime').value,
+                maxBookingsPerDay: parseInt(document.getElementById('settingsMaxBookings').value),
+                whatsappNumber: document.getElementById('settingsWhatsapp').value,
+                liveStreamUrl: document.getElementById('settingsLiveStream').value,
+                password: adminPassword
+            };
+
+            if (document.getElementById('adminNewPassword').value) {
+                settings.adminPassword = document.getElementById('adminNewPassword').value;
+            }
+
+            try {
+                const response = await fetch('/api/studio', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                });
+
+                const data = await response.json();
+                const statusDiv = document.getElementById('settingsStatus');
+                if (data.success) {
+                    statusDiv.innerHTML = '<p style="color: green;">✓ Settings saved successfully!</p>';
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                    }, 3000);
+                } else {
+                    statusDiv.innerHTML = `<p style="color: red;">✗ ${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                document.getElementById('settingsStatus').innerHTML = '<p style="color: red;">✗ Error saving settings</p>';
+            }
+        });
+    </script>
+</body>
+</html>
