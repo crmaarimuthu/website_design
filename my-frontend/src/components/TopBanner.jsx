@@ -39,7 +39,7 @@ return(
 
 <div className="top-banner">
 
-<img src={banners[index]} className="banner-image"/>
+<img src={banners[index]} className="banner-image" alt="banner"/>
 
 <div className="banner-overlay">
 

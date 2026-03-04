@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../styles/main.css";
 import { Link } from "react-router-dom";
-
 
 import b1 from "../assets/images/banner1.jpg";
 import b2 from "../assets/images/banner2.jpg";
@@ -16,40 +15,120 @@ import b10 from "../assets/images/banner10.jpg";
 
 const banners = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10];
 
+import v1 from "../assets/videos/video1.mp4";
+import v2 from "../assets/videos/video2.mp4";
+import v3 from "../assets/videos/video3.mp4";
+
+const videos = [v1, v2, v3];
+
 function Home(){
 
-const [index,setIndex]=useState(0);
+  /* VIDEO STATE */
+const [videoIndex,setVideoIndex] = useState(0);
+const videoRef = useRef(null);
+
+/* IMAGE STATE */
+const [imageIndex,setImageIndex] = useState(0);
 
 useEffect(()=>{
 const timer=setInterval(()=>{
-setIndex((prev)=>(prev+1)%banners.length);
+setImageIndex((prev)=>(prev+1)%banners.length);
 },4000);
 
 return()=>clearInterval(timer);
 
 },[]);
 
-const next=()=>{
-setIndex((index+1)%banners.length);
+/* VIDEO NEXT WHEN FINISH */
+const handleEnded=()=>{
+setVideoIndex((prev)=>(prev+1)%videos.length);
 };
 
-const prev=()=>{
-setIndex((index-1+banners.length)%banners.length);
+/* VIDEO MANUAL */
+const nextVideo=()=>{
+setVideoIndex((videoIndex+1)%videos.length);
 };
+
+const prevVideo=()=>{
+setVideoIndex((videoIndex-1+videos.length)%videos.length);
+};
+
+/* IMAGE MANUAL */
+const nextImage=()=>{
+setImageIndex((imageIndex+1)%banners.length);
+};
+
+const prevImage=()=>{
+setImageIndex((imageIndex-1+banners.length)%banners.length);
+};
+
+/* VIDEO AUTO LOAD */
+useEffect(()=>{
+if(videoRef.current){
+videoRef.current.load();
+videoRef.current.play();
+}
+},[videoIndex]);
+
 
 return(
 
 <div>
 
-{/* HERO SLIDER */}
+{/* STUDIO TITLE */}
+
+<section className="studio-title">
+
+<h1>Tamil Digital Studio</h1>
+<p>Capture Your Beautiful Moments</p>
+
+</section>
+
+
+{/* VIDEO HERO SECTION */}
+
+<section className="video-section">
+
+<h2 className="section-title">Our Wedding Films</h2>
+
+<div className="hero-video-slider">
+
+<video
+ref={videoRef}
+className="hero-video"
+autoPlay
+muted
+onEnded={handleEnded}
+>
+
+<source src={videos[videoIndex]} type="video/mp4"/>
+
+</video>
+
+<button className="prev" onClick={prevVideo}>❮</button>
+<button className="next" onClick={nextVideo}>❯</button>
+
+</div>
+
+</section>
+
+{/* ALBUM TITLE */}
+
+<section className="album-title-section">
+
+<h2>Our Photo Albums</h2>
+<p>Beautiful Moments Captured Forever</p>
+
+</section>
+
+{/* IMAGE SLIDER */}
 
 <div className="hero-slider">
 
-<img src={banners[index]} className="hero-img"/>
+<img src={banners[imageIndex]} className="hero-img"/>
 
-<button className="prev" onClick={prev}>❮</button>
-
-<button className="next" onClick={next}>❯</button>
+<button className="prev" onClick={prevImage}>❮</button>
+<button className="next" onClick={nextImage}>❯</button>
 
 </div>
 
