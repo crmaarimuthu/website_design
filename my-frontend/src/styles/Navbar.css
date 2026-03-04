@@ -1,0 +1,70 @@
+/* Navbar background */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:#111;
+}
+
+/* Logo section */
+.logo-section{
+  display:flex;
+  align-items:center;
+}
+
+/* Logo image */
+.logo-img{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+/* Logo text */
+.logo-text{
+  display:flex;
+  flex-direction:column;
+}
+
+/* Small text */
+.logo-small{
+  font-family:'Poppins', sans-serif;
+  font-size:12px;
+  color:#ccc;
+}
+
+/* Main logo text */
+.logo-big{
+  font-family:'Playfair Display', serif;
+  font-size:22px;
+  font-weight:600;
+  color:#FFD700;
+  letter-spacing:1px;
+}
+
+/* Navigation links */
+.nav-links a{
+  margin:0 15px;
+  text-decoration:none;
+  font-family:'Poppins', sans-serif;
+  font-size:15px;
+  color:white;
+  transition:0.3s;
+}
+
+/* Hover effect */
+.nav-links a:hover{
+  color:#FFD700;
+}
+
+/* Search icon */
+.search-icon{
+  font-size:18px;
+  color:white;
+  cursor:pointer;
+}
+
+.search-icon:hover{
+  color:#FFD700;
+}
