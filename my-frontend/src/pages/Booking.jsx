@@ -1,35 +1,85 @@
 import { useState } from "react";
 
-function Booking() {
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
+function Booking(){
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Booking Confirmed for ${name} on ${date}`);
-  };
+const [form,setForm]=useState({
+name:"",
+email:"",
+date:"",
+event:"Wedding"
+});
 
-  return (
-    <div>
-      <h1>Book Your Event</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Your Name"
-          required
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="date"
-          required
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <button type="submit" className="btn">
-          Submit
-        </button>
-      </form>
-    </div>
-  );
+const handleChange=(e)=>{
+setForm({...form,[e.target.name]:e.target.value});
+};
+
+const handleSubmit=(e)=>{
+e.preventDefault();
+
+console.log("Booking Data:",form);
+
+alert("Booking submitted successfully!");
+
+setForm({
+name:"",
+email:"",
+date:"",
+event:"Wedding"
+});
+};
+
+return(
+
+<div className="booking-page">
+
+<h1>Book Your Event</h1>
+
+<form onSubmit={handleSubmit} className="booking-form">
+
+<input
+type="text"
+name="name"
+placeholder="Your Name"
+value={form.name}
+onChange={handleChange}
+required
+/>
+
+<input
+type="email"
+name="email"
+placeholder="Email"
+value={form.email}
+onChange={handleChange}
+required
+/>
+
+<select
+name="event"
+value={form.event}
+onChange={handleChange}
+>
+<option>Wedding</option>
+<option>Pre Wedding</option>
+<option>Birthday</option>
+<option>Fashion Shoot</option>
+</select>
+
+<input
+type="date"
+name="date"
+value={form.date}
+onChange={handleChange}
+required
+/>
+
+<button type="submit">Confirm Booking</button>
+
+</form>
+
+</div>
+
+);
 }
 
 export default Booking;
