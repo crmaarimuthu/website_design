@@ -1,70 +1,125 @@
-/* Navbar background */
+/* NAVBAR */
+
 .navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 40px;
-  background:#111;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:#111;
+flex-wrap:wrap;
 }
 
-/* Logo section */
+/* LOGO */
+
 .logo-section{
-  display:flex;
-  align-items:center;
+display:flex;
+align-items:center;
 }
 
-/* Logo image */
 .logo-img{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  margin-right:10px;
+width:55px;
+height:55px;
+border-radius:50%;
+margin-right:10px;
 }
 
-/* Logo text */
 .logo-text{
-  display:flex;
-  flex-direction:column;
+display:flex;
+flex-direction:column;
 }
 
-/* Small text */
 .logo-small{
-  font-family:'Poppins', sans-serif;
-  font-size:12px;
-  color:#ccc;
+font-family:'Poppins', sans-serif;
+font-size:12px;
+color:#ccc;
 }
 
-/* Main logo text */
 .logo-big{
-  font-family:'Playfair Display', serif;
-  font-size:22px;
-  font-weight:600;
-  color:#FFD700;
-  letter-spacing:1px;
+font-family:'Playfair Display', serif;
+font-size:22px;
+font-weight:600;
+color:#FFD700;
+letter-spacing:1px;
 }
 
-/* Navigation links */
+/* LINKS */
+
+.nav-links{
+display:flex;
+flex-wrap:wrap;
+}
+
 .nav-links a{
-  margin:0 15px;
-  text-decoration:none;
-  font-family:'Poppins', sans-serif;
-  font-size:15px;
-  color:white;
-  transition:0.3s;
+margin:0 15px;
+text-decoration:none;
+font-family:'Poppins', sans-serif;
+font-size:15px;
+color:white;
+transition:0.3s;
 }
 
-/* Hover effect */
 .nav-links a:hover{
-  color:#FFD700;
+color:#FFD700;
 }
 
-/* Search icon */
+/* SEARCH */
+
+.search-container{
+display:flex;
+align-items:center;
+position:relative;
+}
+
+.search-box{
+display:flex;
+align-items:center;
+background:white;
+border-radius:25px;
+overflow:hidden;
+width:0;
+transition:0.4s;
+}
+
+.search-box.active{
+width:200px;
+margin-right:10px;
+}
+
+.search-box input{
+border:none;
+outline:none;
+padding:8px 10px;
+font-size:14px;
+width:100%;
+}
+
+.search-box button{
+border:none;
+background:#FFD700;
+padding:8px 12px;
+cursor:pointer;
+}
+
 .search-icon{
-  font-size:18px;
-  color:white;
-  cursor:pointer;
+font-size:18px;
+color:white;
+cursor:pointer;
 }
 
 .search-icon:hover{
-  color:#FFD700;
+color:#FFD700;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.nav-links{
+display:none;
+}
+
+.search-box.active{
+width:140px;
+}
+
 }
