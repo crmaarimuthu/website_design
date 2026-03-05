@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Services from "./pages/Services";
 import Booking from "./pages/Booking";
 import Contact from "./pages/Contact";
-
+import PortraitGallery from "./pages/PortraitGallery";
 import "./styles/main.css";
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/gallery/:type" element={<PortraitGallery />} />
         </Routes>
       </div>
       <Footer />
