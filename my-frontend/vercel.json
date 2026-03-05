@@ -3,9 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": "dist",
-  "env": {
-    "VITE_API_URL": "@vite_api_url"
-  },
   "functions": {
     "api/**/*.js": {
       "memory": 1024,
