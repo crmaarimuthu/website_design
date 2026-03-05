@@ -1,11 +1,15 @@
-/* GLOBAL */
+/* ================= GLOBAL ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
-margin:0;
 font-family:'Segoe UI', sans-serif;
 background:#7a7a7a;
 }
-
 
 /* ================= NAVBAR ================= */
 
@@ -19,6 +23,7 @@ justify-content:space-between;
 align-items:center;
 z-index:100;
 color:white;
+flex-wrap:wrap;
 }
 
 /* LOGO */
@@ -50,6 +55,11 @@ font-weight:bold;
 
 /* NAV LINKS */
 
+.nav-links{
+display:flex;
+flex-wrap:wrap;
+}
+
 .nav-links a{
 margin:0 15px;
 text-decoration:none;
@@ -77,16 +87,7 @@ height:90vh;
 overflow:hidden;
 }
 
-/* IMAGE */
-
-.hero-img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-/* VIDEO */
-
+.hero-img,
 .hero-video{
 width:100%;
 height:100%;
@@ -118,19 +119,14 @@ padding:10px 20px;
 cursor:pointer;
 }
 
-.prev{
-left:20px;
-}
-
-.next{
-right:20px;
-}
+.prev{ left:20px; }
+.next{ right:20px; }
 
 
 /* ================= SERVICES ================= */
 
 .services{
-padding:60px;
+padding:60px 5%;
 text-align:center;
 }
 
@@ -157,11 +153,22 @@ transform:scale(1.05);
 margin-top:10px;
 }
 
+/* SERVICE TEXT */
+
+.service-text{
+max-width:700px;
+margin:auto;
+margin-top:10px;
+color:#555;
+font-size:16px;
+line-height:1.6;
+}
+
 
 /* ================= BLOG ================= */
 
 .blog{
-padding:60px;
+padding:60px 5%;
 background:#f3f3f3;
 text-align:center;
 }
@@ -188,7 +195,7 @@ margin-top:10px;
 /* ================= SUBSCRIBE ================= */
 
 .subscribe{
-padding:50px;
+padding:50px 20px;
 text-align:center;
 background:#111;
 color:white;
@@ -197,6 +204,7 @@ color:white;
 .subscribe input{
 padding:10px;
 width:250px;
+max-width:90%;
 border-radius:5px;
 border:none;
 margin-right:10px;
@@ -219,7 +227,7 @@ background:#e65c00;
 /* ================= GALLERY ================= */
 
 .gallery{
-padding:60px;
+padding:60px 5%;
 text-align:center;
 }
 
@@ -251,6 +259,9 @@ padding:15px;
 background:#111;
 color:white;
 }
+
+
+/* ================= TOP BANNER ================= */
 
 .top-banner{
 position:relative;
@@ -301,15 +312,11 @@ padding:10px 20px;
 cursor:pointer;
 }
 
-.banner-prev{
-left:20px;
-}
+.banner-prev{ left:20px; }
+.banner-next{ right:20px; }
 
-.banner-next{
-right:20px;
-}
 
-/* VIDEO HERO CONTAINER */
+/* ================= VIDEO HERO ================= */
 
 .hero-video-slider{
 position:relative;
@@ -318,16 +325,8 @@ height:90vh;
 overflow:hidden;
 }
 
-/* SERVICE TEXT */
 
-.service-text{
-max-width:700px;
-margin:auto;
-margin-top:10px;
-color:#555;
-font-size:16px;
-line-height:1.6;
-}
+/* ================= TITLES ================= */
 
 .studio-title{
 text-align:center;
@@ -370,4 +369,85 @@ margin-bottom:10px;
 .album-title-section p{
 color:#666;
 font-size:18px;
+}
+
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width:1024px){
+
+.hero-slider,
+.hero-video-slider{
+height:70vh;
+}
+
+.banner-title{
+font-size:40px;
+}
+
+}
+
+@media (max-width:768px){
+
+.navbar{
+padding:15px 20px;
+flex-direction:column;
+}
+
+.nav-links{
+margin-top:10px;
+}
+
+.hero-slider,
+.hero-video-slider{
+height:60vh;
+}
+
+.banner-title{
+font-size:30px;
+}
+
+.banner-text{
+font-size:16px;
+}
+
+.prev,
+.next{
+font-size:28px;
+}
+
+.studio-title h1{
+font-size:35px;
+}
+
+.section-title{
+font-size:28px;
+}
+
+}
+
+@media (max-width:480px){
+
+.hero-slider,
+.hero-video-slider{
+height:50vh;
+}
+
+.banner-title{
+font-size:24px;
+}
+
+.banner-text{
+font-size:14px;
+}
+
+.subscribe input{
+width:100%;
+margin-bottom:10px;
+}
+
+.subscribe button{
+width:100%;
+}
+
 }
