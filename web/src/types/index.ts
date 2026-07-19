@@ -78,6 +78,8 @@ export interface SiteConfig {
     country: string;
   };
   geo: { lat: number; lng: number };
+  /** Public Google Maps link used by "Get Directions" / "Open in Maps". */
+  maps: string;
   hours: string;
   socials: { label: string; href: string; icon: string }[];
   logo: string;

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageCircle, Navigation } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "@/components/forms/ContactForm";
@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const mapSrc = `https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=14&output=embed`;
+  const mapQuery = encodeURIComponent(
+    `${site.name}, ${site.address.street}, ${site.address.city}, ${site.address.region}, ${site.address.country}`,
+  );
+  const mapSrc = `https://www.google.com/maps?q=${mapQuery}&z=15&output=embed`;
 
   return (
     <>
@@ -30,7 +33,8 @@ export default function ContactPage() {
               <li className="flex gap-4">
                 <MapPin className="mt-0.5 shrink-0 text-accent" size={20} />
                 <span className="text-fg-muted">
-                  {site.address.street}, {site.address.city}, {site.address.region} {site.address.postalCode}
+                  {site.name}, {site.address.street}, {site.address.city}, {site.address.region}{" "}
+                  {site.address.postalCode}, {site.address.country}
                 </span>
               </li>
               <li className="flex gap-4">
@@ -59,13 +63,21 @@ export default function ContactPage() {
 
             <div className="mt-8 aspect-video overflow-hidden rounded-2xl border border-border">
               <iframe
-                title="Studio location map"
+                title={`${site.name} location map`}
                 src={mapSrc}
                 className="h-full w-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
+            <a
+              href={site.maps}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/60 px-5 py-2.5 text-sm text-fg transition-colors hover:border-accent hover:bg-accent/10"
+            >
+              <Navigation size={16} className="text-accent" /> Get Directions
+            </a>
           </div>
         </Reveal>
 

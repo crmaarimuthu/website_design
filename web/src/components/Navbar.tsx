@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Search, X, Phone, MessageCircle } from "lucide-react";
 import { navLinks } from "@/content/nav";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
@@ -155,6 +155,22 @@ export function Navbar() {
           <ButtonLink href="/booking" className="mt-8" onClick={() => setMenuOpen(false)}>
             Book Your Session
           </ButtonLink>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <a
+              href={`tel:${site.phone.replace(/\s+/g, "")}`}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/60 px-4 py-3 text-sm text-fg transition-colors hover:border-accent hover:bg-accent/10"
+            >
+              <Phone size={16} className="text-accent" /> Call Now
+            </a>
+            <a
+              href={`https://wa.me/${site.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/60 px-4 py-3 text-sm text-fg transition-colors hover:border-accent hover:bg-accent/10"
+            >
+              <MessageCircle size={16} className="text-accent" /> WhatsApp
+            </a>
+          </div>
         </div>
       </div>
 

@@ -93,7 +93,7 @@ export function Footer() {
                 <MapPin size={18} className="mt-0.5 shrink-0 text-accent" />
                 <span>
                   {site.address.street}, {site.address.city}, {site.address.region}{" "}
-                  {site.address.postalCode}
+                  {site.address.postalCode}, {site.address.country}
                 </span>
               </li>
               <li className="flex items-center gap-3">
