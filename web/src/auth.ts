@@ -2,10 +2,16 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 /**
- * Single-owner admin auth. Credentials are checked against ADMIN_EMAIL /
- * ADMIN_PASSWORD env vars; sessions are stateless JWTs (no auth tables needed).
- * Set a strong AUTH_SECRET in production.
+ * Studio owners allowlist. Emails are non-secret and live in code; each owner's
+ * password comes from its own env var, falling back to the shared ADMIN_PASSWORD.
+ * Sessions are stateless JWTs (no auth tables needed). Set a strong AUTH_SECRET
+ * in production.
  */
+const OWNERS: { email: string; passwordEnv: string }[] = [
+  { email: process.env.ADMIN_EMAIL ?? "thamothamotharan35@gmail.com", passwordEnv: "thamo@123" },
+  { email: "crmari21052000@gmail.com", passwordEnv: "maari@123" },
+];
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   // A real secret is REQUIRED in production (build/runtime will error without it,
@@ -22,11 +28,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: (credentials) => {
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-        if (!adminEmail || !adminPassword) return null;
-        if (credentials?.email === adminEmail && credentials?.password === adminPassword) {
-          return { id: "admin", name: "Studio Admin", email: adminEmail };
+        const email = String(credentials?.email ?? "").toLowerCase().trim();
+        const password = String(credentials?.password ?? "");
+        if (!email || !password) return null;
+
+        const owner = OWNERS.find((o) => o.email.toLowerCase() === email);
+        if (!owner) return null;
+
+        // Per-owner password if set, else the shared ADMIN_PASSWORD.
+        const expected = process.env[owner.passwordEnv] ?? process.env.ADMIN_PASSWORD;
+        if (expected && password === expected) {
+          return { id: owner.email, name: "Studio Owner", email: owner.email };
         }
         return null;
       },
