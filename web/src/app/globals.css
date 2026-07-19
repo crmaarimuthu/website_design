@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* next-themes uses the class strategy — wire the dark variant to the .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Brand: Tamil Digital Studio — premium warm-gold on deep ink.
+   Semantic tokens flip between light & dark; utilities map to them below.
+--------------------------------------------------------------------------- */
+:root {
+  --bg: #f7f5f1;
+  --bg-elevated: #ffffff;
+  --surface: rgba(20, 18, 26, 0.04);
+  --surface-strong: rgba(20, 18, 26, 0.07);
+  --border: rgba(20, 18, 26, 0.12);
+  --fg: #171419;
+  --fg-muted: #55505c;
+  --fg-subtle: #837d8c;
+  --accent: #b8893b;
+  --accent-soft: #d8b878;
+  --accent-contrast: #1a130a;
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow: 0 20px 50px -20px rgba(20, 18, 26, 0.35);
+}
+
+.dark {
+  --bg: #0b0a0f;
+  --bg-elevated: #131119;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-strong: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
+  --fg: #f4f1ec;
+  --fg-muted: #b3aebb;
+  --fg-subtle: #7d7788;
+  --accent: #d8b878;
+  --accent-soft: #e7cf9e;
+  --accent-contrast: #1a130a;
+  --glass: rgba(19, 17, 25, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.7);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+
+  --font-display: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* --- Reusable brand utilities ------------------------------------------- */
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--glass-border);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(120deg, var(--accent-soft), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .shadow-premium {
+    box-shadow: var(--shadow);
+  }
+
+  .rule-gold::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 2px;
+    margin-top: 0.85rem;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .container-px {
+    padding-left: clamp(1.25rem, 5vw, 5rem);
+    padding-right: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Custom scrollbar (desktop pointers only, non-intrusive) */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 999px;
+    border: 3px solid var(--bg);
+  }
+}
