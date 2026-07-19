@@ -1,0 +1,67 @@
+// Tamil Digital Studio — data model.
+// Provider is Postgres (Neon / Vercel Postgres per the chosen serverless stack).
+// The app runs without a database too: when DATABASE_URL is unset, API routes
+// fall back to logging + email instead of persisting.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_PAID
+  PAID
+  REFUNDED
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  name            String
+  email           String
+  phone           String
+  eventType       String
+  date            DateTime
+  message         String?
+  packageName     String?
+  // Deposit amount in the smallest currency unit (paise for INR).
+  depositAmount   Int?
+  currency        String        @default("inr")
+  status          BookingStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  stripeSessionId String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([date])
+  @@index([status])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([handled])
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

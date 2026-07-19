@@ -1,4 +1,5 @@
 import { subscribeSchema } from "@/lib/schemas";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -16,6 +17,22 @@ export async function POST(request: Request) {
     );
   }
 
-  console.log("[subscribe] new email:", parsed.data.email);
+  const { email } = parsed.data;
+
+  if (prisma) {
+    try {
+      // Idempotent — re-subscribing is a no-op, not an error.
+      await prisma.subscriber.upsert({
+        where: { email },
+        update: {},
+        create: { email },
+      });
+    } catch (err) {
+      console.error("[subscribe:db-error]", err);
+    }
+  } else {
+    console.log("[subscribe] (no DB) new email:", email);
+  }
+
   return Response.json({ ok: true, message: "Subscribed." });
 }

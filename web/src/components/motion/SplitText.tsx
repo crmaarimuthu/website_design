@@ -1,29 +1,27 @@
 "use client";
 
-import { createElement, useEffect, useRef } from "react";
-import type { ElementType } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
 // Non-breaking space keeps inter-word gaps from collapsing inside the
 // overflow-hidden mask wrappers.
-const NBSP = " ";
+const NBSP = " ";
 
 interface SplitTextProps {
   text: string;
-  /** Heading level / tag to render. Defaults to h2. */
-  as?: ElementType;
   className?: string;
   delay?: number;
 }
 
 /**
- * Word-by-word mask-wipe reveal, triggered when the heading scrolls into view.
- * Each word sits in an overflow-hidden wrapper and slides up from below, so the
- * clip creates the "line reveal" look without the paid GSAP SplitText plugin.
- * Reduced-motion users get the plain, fully-visible heading.
+ * Word-by-word mask-wipe reveal, triggered when the text scrolls into view.
+ * Renders an inline span (wrap it in your own heading tag). Each word sits in an
+ * overflow-hidden wrapper and slides up from below, creating the "line reveal"
+ * look without the paid GSAP SplitText plugin. Reduced-motion users get the
+ * plain, fully-visible text.
  */
-export function SplitText({ text, as: Tag = "h2", className, delay = 0 }: SplitTextProps) {
-  const ref = useRef<HTMLElement>(null);
+export function SplitText({ text, className, delay = 0 }: SplitTextProps) {
+  const ref = useRef<HTMLSpanElement>(null);
   const words = text.split(" ");
 
   useEffect(() => {
@@ -47,17 +45,15 @@ export function SplitText({ text, as: Tag = "h2", className, delay = 0 }: SplitT
     return () => ctx.revert();
   }, [delay]);
 
-  // createElement avoids the "children: never" inference TS applies to a
-  // dynamic ElementType rendered as a JSX tag.
-  return createElement(
-    Tag,
-    { ref, className },
-    words.map((word, i) => (
-      <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.12em]">
-        <span data-word className="inline-block will-change-transform">
-          {i < words.length - 1 ? word + NBSP : word}
+  return (
+    <span ref={ref} className={className}>
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.12em]">
+          <span data-word className="inline-block will-change-transform">
+            {i < words.length - 1 ? word + NBSP : word}
+          </span>
         </span>
-      </span>
-    )),
+      ))}
+    </span>
   );
 }

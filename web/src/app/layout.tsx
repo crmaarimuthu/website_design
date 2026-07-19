@@ -72,10 +72,18 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-accent focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-accent-contrast"
+          >
+            Skip to content
+          </a>
           <SmoothScroll>
             <Schema />
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+              {children}
+            </main>
             <Footer />
             <WhatsAppFab />
           </SmoothScroll>

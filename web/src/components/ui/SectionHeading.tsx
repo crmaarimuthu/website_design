@@ -32,7 +32,7 @@ export function SectionHeading({
         </p>
       )}
       <h2 className="font-display text-3xl leading-tight sm:text-4xl md:text-5xl">
-        {typeof title === "string" ? <SplitText as="span" text={title} /> : title}
+        {typeof title === "string" ? <SplitText text={title} /> : title}
       </h2>
       {description && (
         <p className="mt-4 text-base leading-relaxed text-fg-muted sm:text-lg">{description}</p>
