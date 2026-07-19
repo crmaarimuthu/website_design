@@ -4,6 +4,7 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Hero3D } from "./Hero3D";
 import { ButtonLink } from "../ui/Button";
+import { Magnetic } from "../motion/Magnetic";
 import { site } from "@/content/site";
 
 export function Hero() {
@@ -56,12 +57,16 @@ export function Hero() {
             across Tamil Nadu — designed to be relived for a lifetime.
           </motion.p>
           <motion.div variants={item} className="mt-9 flex flex-wrap items-center gap-4">
-            <ButtonLink href="/booking" size="lg">
-              Book a Session <ArrowRight size={18} />
-            </ButtonLink>
-            <ButtonLink href="/portfolio" size="lg" variant="outline">
-              <Play size={16} /> View Portfolio
-            </ButtonLink>
+            <Magnetic>
+              <ButtonLink href="/booking" size="lg">
+                Book a Session <ArrowRight size={18} />
+              </ButtonLink>
+            </Magnetic>
+            <Magnetic>
+              <ButtonLink href="/portfolio" size="lg" variant="outline">
+                <Play size={16} /> View Portfolio
+              </ButtonLink>
+            </Magnetic>
           </motion.div>
         </motion.div>
       </div>

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Reveal } from "./Reveal";
+import { SplitText } from "@/components/motion/SplitText";
 
 interface SectionHeadingProps {
   eyebrow?: string;
@@ -30,7 +31,9 @@ export function SectionHeading({
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-3xl leading-tight sm:text-4xl md:text-5xl">{title}</h2>
+      <h2 className="font-display text-3xl leading-tight sm:text-4xl md:text-5xl">
+        {typeof title === "string" ? <SplitText as="span" text={title} /> : title}
+      </h2>
       {description && (
         <p className="mt-4 text-base leading-relaxed text-fg-muted sm:text-lg">{description}</p>
       )}

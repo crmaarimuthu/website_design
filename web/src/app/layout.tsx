@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { Cursor } from "@/components/motion/Cursor";
+import { FilmGrain } from "@/components/FilmGrain";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
@@ -33,6 +36,7 @@ export const metadata: Metadata = {
     "wedding films",
     "fashion photography",
     "Tamil Nadu photographer",
+    "Karambakkudi photographer",
     "Pudukkottai",
     "Thanjavur",
   ],
@@ -68,11 +72,15 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Schema />
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppFab />
+          <SmoothScroll>
+            <Schema />
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <WhatsAppFab />
+          </SmoothScroll>
+          <Cursor />
+          <FilmGrain />
         </ThemeProvider>
       </body>
     </html>

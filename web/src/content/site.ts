@@ -9,17 +9,19 @@ export const site: SiteConfig = {
   description:
     "Tamil Digital Studio is a premium photography & cinematography studio crafting timeless wedding films, fashion portraits, and cinematic stories across Tamil Nadu.",
   url: "https://tamildigitalstudio.example",
-  phone: "+91 98765 43210",
-  whatsapp: "919876543210",
+  phone: "+91 99528 06857",
+  whatsapp: "919952806857",
   email: "hello@tamildigitalstudio.example",
   address: {
-    street: "12 Raja Street",
-    city: "Pudukkottai",
+    // Mahalakshmi Complex, nearby Ramaiya Restaurant, Karambakkudi.
+    street: "Mahalakshmi Complex, Nearby Ramaiya Restaurant",
+    city: "Karambakkudi",
     region: "Tamil Nadu",
-    postalCode: "622001",
+    postalCode: "622302",
     country: "India",
   },
-  geo: { lat: 10.3813, lng: 78.8214 },
+  // Approximate coordinates for Karambakkudi — confirm exact pin before launch.
+  geo: { lat: 10.4592, lng: 79.0736 },
   hours: "Mon–Sat · 9:00 AM – 8:00 PM",
   socials: [
     { label: "Instagram", href: "https://instagram.com", icon: "Instagram" },
