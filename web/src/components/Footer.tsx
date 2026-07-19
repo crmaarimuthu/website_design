@@ -1,12 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, Facebook, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Camera, Globe, Video, Mail, Phone, MapPin } from "lucide-react";
 import { site } from "@/content/site";
 import { navLinks } from "@/content/nav";
 import { services } from "@/content/services";
 import type { LucideIcon } from "lucide-react";
 
-const socialIcons: Record<string, LucideIcon> = { Instagram, Facebook, Youtube };
+// This lucide version ships no brand marks — map socials to expressive generics.
+const socialIcons: Record<string, LucideIcon> = {
+  Instagram: Camera,
+  Facebook: Globe,
+  Youtube: Video,
+};
 
 export function Footer() {
   return (
@@ -32,7 +37,7 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-fg-muted">{site.description}</p>
             <div className="mt-6 flex gap-3">
               {site.socials.map((s) => {
-                const Icon = socialIcons[s.icon] ?? Instagram;
+                const Icon = socialIcons[s.icon] ?? Globe;
                 return (
                   <a
                     key={s.label}

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Hero3D } from "./Hero3D";
 import { ButtonLink } from "../ui/Button";
@@ -9,12 +9,12 @@ import { site } from "@/content/site";
 export function Hero() {
   const reduce = useReducedMotion();
 
-  const container = {
+  const container: Variants = {
     hidden: {},
     show: { transition: { staggerChildren: reduce ? 0 : 0.12 } },
   };
-  const item = reduce
-    ? {}
+  const item: Variants = reduce
+    ? { hidden: {}, show: {} }
     : {
         hidden: { opacity: 0, y: 28 },
         show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
